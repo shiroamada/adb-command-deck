@@ -1,0 +1,96 @@
+.card {
+  height: fit-content;
+}
+
+.title {
+  font-family: var(--font-headline);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.label {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-on-surface-variant);
+}
+
+.value {
+  font-size: 0.875rem;
+  font-family: var(--font-mono);
+  color: var(--color-on-surface);
+  word-break: break-all;
+}
+
+.missing {
+  color: var(--color-error);
+  font-style: italic;
+}
+
+.divider {
+  height: 1px;
+  background-color: var(--color-outline-variant);
+  opacity: 0.5;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  font-family: var(--font-mono);
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.success {
+  color: var(--color-primary);
+}
+
+.success .statusDot {
+  background-color: var(--color-primary);
+}
+
+.warning {
+  color: var(--color-secondary);
+}
+
+.warning .statusDot {
+  background-color: var(--color-secondary);
+}
+
+.error {
+  color: var(--color-error);
+}
+
+.error .statusDot {
+  background-color: var(--color-error);
+}
+
+.unknown {
+  color: var(--color-on-surface-variant);
+}
+
+.unknown .statusDot {
+  background-color: var(--color-on-surface-variant);
+}

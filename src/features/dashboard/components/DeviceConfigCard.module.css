@@ -1,0 +1,60 @@
+.card {
+  height: fit-content;
+}
+
+.title {
+  font-family: var(--font-headline);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.row {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-end;
+}
+
+.ipField {
+  flex: 0 0 160px;
+  max-width: 160px;
+}
+
+.portField {
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.noDevice {
+  color: var(--color-on-surface-variant);
+  font-size: 0.875rem;
+  text-align: center;
+  padding: var(--space-4);
+}
+
+.showActivityBtn {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 0.875rem;
+  font-family: var(--font-body);
+  cursor: pointer;
+  text-align: left;
+  padding: var(--space-1) 0;
+}
+
+.showActivityBtn:hover {
+  text-decoration: underline;
+}

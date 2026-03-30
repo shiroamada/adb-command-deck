@@ -1,0 +1,49 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.card {
+  height: fit-content;
+}
+
+.label {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-2);
+}
+
+.valueContainer {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+}
+
+.value {
+  font-family: var(--font-headline);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.unit {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+}
+
+/* Color variants */
+.primary {
+  color: var(--color-primary);
+}
+
+.secondary {
+  color: var(--color-secondary);
+}
+
+.tertiary {
+  color: var(--color-tertiary);
+}

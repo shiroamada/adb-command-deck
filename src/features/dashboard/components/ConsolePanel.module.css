@@ -1,0 +1,200 @@
+.card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin-bottom: var(--space-4);
+  min-height: 200px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-outline-variant);
+  background-color: var(--color-surface-container);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.title {
+  font-family: var(--font-headline);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+
+.consoleOutput {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-3);
+  font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', Monaco, 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  min-height: 0;
+  user-select: text;
+  cursor: text;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.consoleOutput::-webkit-scrollbar {
+  width: 8px;
+}
+
+.consoleOutput::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.consoleOutput::-webkit-scrollbar-thumb {
+  background-color: rgba(128, 128, 128, 0.4);
+  border-radius: 4px;
+}
+
+.consoleOutput::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(128, 128, 128, 0.6);
+}
+
+.placeholder {
+  color: rgba(128, 128, 128, 0.6);
+  font-style: italic;
+}
+
+.consoleLine {
+  display: flex;
+  gap: var(--space-2);
+  padding: 2px 0;
+}
+
+.timestamp {
+  flex-shrink: 0;
+  opacity: 0.6;
+  font-size: 12px;
+}
+
+.level {
+  flex-shrink: 0;
+  min-width: 32px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.level.cmd {
+  color: inherit;
+  opacity: 0.7;
+}
+
+.level.error {
+  color: #ff716c;
+}
+
+.level.warning {
+  color: #ffb86c;
+}
+
+.level.success {
+  color: #3fff8b;
+}
+
+.level.info {
+  color: #6e9bff;
+}
+
+.level.live {
+  color: #7ae6ff;
+}
+
+.level.system {
+  color: inherit;
+  opacity: 0.5;
+}
+
+.content {
+  flex: 1;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* ANSI color spans from ansi-to-html */
+.content :global(.ansi-bold) {
+  font-weight: bold;
+}
+
+.content :global(.ansi-italic) {
+  font-style: italic;
+}
+
+.content :global(.ansi-underline) {
+  text-decoration: underline;
+}
+
+.content :global(.ansi-fg-black) { color: #000; }
+.content :global(.ansi-fg-red) { color: #ff716c; }
+.content :global(.ansi-fg-green) { color: #3fff8b; }
+.content :global(.ansi-fg-yellow) { color: #ffb86c; }
+.content :global(.ansi-fg-blue) { color: #6e9bff; }
+.content :global(.ansi-fg-magenta) { color: #ff79c6; }
+.content :global(.ansi-fg-cyan) { color: #7ae6ff; }
+.content :global(.ansi-fg-white) { color: #fff; }
+
+.content :global(.ansi-bg-black) { background-color: #000; }
+.content :global(.ansi-bg-red) { background-color: #ff716c; }
+.content :global(.ansi-bg-green) { background-color: #3fff8b; }
+.content :global(.ansi-bg-yellow) { background-color: #ffb86c; }
+.content :global(.ansi-bg-blue) { background-color: #6e9bff; }
+.content :global(.ansi-bg-magenta) { background-color: #ff79c6; }
+.content :global(.ansi-bg-cyan) { background-color: #7ae6ff; }
+.content :global(.ansi-bg-white) { background-color: #fff; }
+
+.inputBar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-surface-container-low);
+  border-top: 1px solid var(--color-outline-variant);
+}
+
+.prompt {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.commandInput {
+  flex: 1;
+  height: 32px;
+  padding: 0 var(--space-3);
+  background-color: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--color-on-surface);
+  transition: border-color 0.15s;
+}
+
+.commandInput:focus {
+  border-color: var(--color-primary);
+}
+
+.commandInput:disabled {
+  opacity: 0.5;
+}
+
+.commandInput::placeholder {
+  color: var(--color-on-surface-variant);
+  opacity: 0.6;
+}

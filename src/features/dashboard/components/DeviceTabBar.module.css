@@ -1,0 +1,214 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background-color: var(--color-surface-container);
+  border-bottom: 1px solid var(--color-outline-variant);
+}
+
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+  overflow-x: auto;
+  flex: 1;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--color-surface-variant);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color 0.15s;
+  min-width: 120px;
+  max-width: 200px;
+}
+
+.tab:hover {
+  background-color: var(--color-surface-container-high);
+}
+
+.tab.active {
+  background-color: var(--color-surface-container-lowest);
+}
+
+.tab.active .tabIcon,
+.tab.active .tabLabel {
+  color: var(--color-on-surface);
+}
+
+.tabIcon {
+  font-size: 0.75rem;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.tab.active .tabIcon {
+  color: var(--color-primary);
+}
+
+.tabLabel {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.closeBtn {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: var(--color-on-surface-variant);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.closeBtn:hover {
+  background-color: rgba(255, 113, 108, 0.2);
+  color: var(--color-error);
+}
+
+.editBtn {
+  width: 18px;
+  height: 18px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--color-on-surface-variant);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  transition: background-color 0.15s, color 0.15s;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+}
+
+.tab:hover .editBtn {
+  display: flex;
+}
+
+.editBtn:hover {
+  background-color: var(--color-surface-container-high);
+  color: var(--color-primary);
+}
+
+.tab.active .editBtn {
+  color: var(--color-on-surface);
+  opacity: 0.8;
+}
+
+.tab.active .editBtn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--color-primary);
+}
+
+.tabEditInput {
+  width: 100px;
+  height: 24px;
+  padding: 0 var(--space-1);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  font-family: inherit;
+  background: var(--color-surface);
+  color: var(--color-on-surface);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  outline: none;
+  flex: 1;
+}
+
+.tab.active .closeBtn {
+  color: var(--color-on-surface);
+  opacity: 0.8;
+}
+
+.tab.active .closeBtn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--color-on-surface);
+}
+
+.addBtn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: var(--color-on-surface-variant);
+  background-color: var(--color-surface-variant);
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.addBtn:hover {
+  background-color: var(--color-surface-container-high);
+  color: var(--color-primary);
+}
+
+/* Confirm Dialog */
+.confirmOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.confirmDialog {
+  width: 360px;
+  max-width: 90vw;
+  background-color: var(--color-surface-container);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-floating);
+}
+
+.confirmHeader {
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--color-outline-variant);
+}
+
+.confirmHeader h3 {
+  font-family: var(--font-headline);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+
+.confirmContent {
+  padding: var(--space-6);
+}
+
+.confirmContent p {
+  color: var(--color-on-surface);
+  margin-bottom: var(--space-2);
+}
+
+.warnText {
+  font-size: 0.875rem;
+  color: var(--color-on-surface-variant);
+}
+
+.confirmActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--color-outline-variant);
+  background-color: var(--color-surface-container-low);
+}

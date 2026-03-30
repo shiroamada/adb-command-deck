@@ -1,0 +1,71 @@
+.topbar {
+  height: var(--appbar-height);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-outline-variant);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-6);
+  flex-shrink: 0;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.title {
+  font-family: var(--font-headline);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+}
+
+.connected {
+  background-color: rgba(63, 255, 139, 0.15);
+  color: var(--color-primary);
+}
+
+.connecting {
+  background-color: rgba(110, 155, 255, 0.15);
+  color: var(--color-secondary);
+  animation: pulse 1.5s infinite;
+}
+
+.error {
+  background-color: rgba(255, 113, 108, 0.15);
+  color: var(--color-error);
+}
+
+.disconnected {
+  background-color: var(--color-surface-variant);
+  color: var(--color-on-surface-variant);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.brand {
+  font-family: var(--font-headline);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--color-on-surface-variant);
+}

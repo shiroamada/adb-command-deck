@@ -1,0 +1,90 @@
+.container {
+  height: 100%;
+  padding: var(--space-8);
+  overflow-y: auto;
+}
+
+.title {
+  font-family: var(--font-headline);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-on-surface);
+  margin-bottom: var(--space-8);
+}
+
+.card {
+  max-width: 600px;
+  margin-bottom: var(--space-6);
+}
+
+.sectionTitle {
+  font-family: var(--font-headline);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+
+.setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--space-4);
+}
+
+.setting + .setting {
+  padding-bottom: 0;
+}
+
+.label {
+  font-size: 0.9375rem;
+  color: var(--color-on-surface);
+}
+
+.themeButtons {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.themeBtn {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-on-surface-variant);
+  background-color: var(--color-surface-variant);
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.themeBtn:hover {
+  background-color: var(--color-surface-container-high);
+}
+
+.themeBtn.active {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.appName {
+  font-family: var(--font-headline);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+
+.version {
+  font-size: 0.8125rem;
+  font-family: var(--font-mono);
+  color: var(--color-on-surface-variant);
+}
+
+.description {
+  font-size: 0.875rem;
+  color: var(--color-on-surface-variant);
+  line-height: 1.5;
+}

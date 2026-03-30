@@ -1,0 +1,111 @@
+.dropZone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background-color: var(--color-surface-container);
+  border: 2px dashed var(--color-outline-variant);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.15s, background-color 0.15s;
+  cursor: pointer;
+  min-height: 80px;
+}
+
+.dropZone.dragging {
+  border-color: var(--color-primary);
+  background-color: rgba(63, 255, 139, 0.05);
+}
+
+.fileInput {
+  display: none;
+}
+
+.icon {
+  font-size: 1.5rem;
+  color: var(--color-on-surface-variant);
+}
+
+.dropZone.dragging .icon {
+  color: var(--color-primary);
+}
+
+.text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-on-surface);
+}
+
+.hint {
+  font-size: 0.75rem;
+  color: var(--color-on-surface-variant);
+}
+
+.browseBtn {
+  padding: var(--space-1) var(--space-3);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  background-color: transparent;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.browseBtn:hover {
+  background-color: rgba(63, 255, 139, 0.1);
+}
+
+.manualForm {
+  display: flex;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 300px;
+  margin-top: var(--space-2);
+}
+
+.manualInput {
+  flex: 1;
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.8125rem;
+  font-family: var(--font-mono);
+  color: var(--color-on-surface);
+  background-color: var(--color-surface-container-low);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-md);
+}
+
+.manualInput::placeholder {
+  color: var(--color-on-surface-variant);
+  opacity: 0.6;
+}
+
+.manualInput:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+.submitBtn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: var(--color-on-primary);
+  background-color: var(--color-primary);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background-color: var(--color-primary-container);
+}
+
+.submitBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

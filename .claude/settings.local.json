@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cargo check:*)",
+      "Bash(npm run:*)",
+      "Bash(cat node_modules/@tauri-apps/plugin-opener/dist/*.d.ts)",
+      "Bash(cat node_modules/@tauri-apps/plugin-opener/dist/*.mjs)",
+      "Bash(rustup target:*)",
+      "Bash(lipo:*)",
+      "Bash(git init:*)",
+      "Bash(git config:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

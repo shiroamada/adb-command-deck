@@ -1,0 +1,82 @@
+.footer {
+  height: var(--footer-height);
+  background-color: var(--color-surface-container-lowest);
+  border-top: 1px solid var(--color-outline-variant);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-4);
+  flex-shrink: 0;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.adbStatus,
+.deviceInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.online {
+  background-color: var(--color-primary);
+}
+
+.starting {
+  background-color: var(--color-secondary);
+  animation: pulse 1s infinite;
+}
+
+.offline {
+  background-color: var(--color-error);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.label {
+  font-size: 0.6875rem;
+  font-family: var(--font-mono);
+  color: var(--color-on-surface-variant);
+}
+
+.value {
+  font-size: 0.6875rem;
+  font-family: var(--font-mono);
+  color: var(--color-on-surface);
+  font-weight: 500;
+}
+
+.link {
+  font-size: 0.6875rem;
+  color: var(--color-on-surface-variant);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.link:hover {
+  color: var(--color-primary);
+}
+
+.separator {
+  font-size: 0.6875rem;
+  color: var(--color-outline-variant);
+}
