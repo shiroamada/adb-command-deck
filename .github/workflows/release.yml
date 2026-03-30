@@ -1,0 +1,177 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    outputs:
+      release_id: ${{ steps.create_release.outputs.release_id }}
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          draft: true
+          prerelease: false
+
+  build-macos:
+    needs: create-release
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+
+      - name: Add Rust targets
+        run: |
+          rustup target add aarch64-apple-darwin x86_64-apple-darwin
+
+      - name: Build macOS (Universal)
+        run: npm run tauri build -- -t universal-apple-darwin --ci
+        env:
+          GITHUB_REF: ${{ github.ref }}
+
+      - name: Upload DMG
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.release_id }}
+          asset_path: src-tauri/target/universal-apple-darwin/release/bundle/dmg/ADB Command Deck_0.1.0_universal.dmg
+          asset_name: ADB-Command-Deck-${{ github.ref_name }}-macOS-universal.dmg
+          asset_content_type: application/x-apple-diskimage
+
+  build-windows:
+    needs: create-release
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+
+      - name: Build Windows
+        run: npm run tauri build -- --ci
+        env:
+          GITHUB_REF: ${{ github.ref }}
+
+      - name: Upload NSIS installer
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.release_id }}
+          asset_path: src-tauri/target/release/bundle/nsis/ADB Command Deck_0.1.0_x64-setup.exe
+          asset_name: ADB-Command-Deck-${{ github.ref_name }}-Windows-x64-setup.exe
+          asset_content_type: application/x-msdownload
+
+  build-linux:
+    needs: create-release
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+
+      - name: Install Linux dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - name: Build Linux
+        run: npm run tauri build -- --ci
+        env:
+          GITHUB_REF: ${{ github.ref }}
+
+      - name: Upload AppImage
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.release_id }}
+          asset_path: src-tauri/target/release/bundle/appimage/ADB Command Deck_0.1.0_amd64.AppImage
+          asset_name: ADB-Command-Deck-${{ github.ref_name }}-Linux-amd64.AppImage
+          asset_content_type: application/vnd.appimage
+
+  build-android:
+    needs: create-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build Android APK
+        run: npm run tauri build -- --target aarch64-linux-android --ci
+        env:
+          GITHUB_REF: ${{ github.ref }}
+
+      - name: Upload APK
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.release_id }}
+          asset_path: src-tauri/target/aarch64-linux-android/release/bundle/apk/ADB Command Deck_0.1.0_aarch64.apk
+          asset_name: ADB-Command-Deck-${{ github.ref_name }}-Android-arm64.apk
+          asset_content_type: application/vnd.android.package-archive
