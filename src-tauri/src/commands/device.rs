@@ -2,8 +2,17 @@ use crate::commands::adb::{detect_adb_internal, get_adb_path, set_adb_path, Comm
 use serde::Serialize;
 use std::path::PathBuf;
 use std::process::Command;
+use std::sync::atomic::{AtomicBool, Ordering};
 use tauri::{Emitter, Window};
-use tokio::time::{timeout, Duration, sleep};
+use tokio::time::{timeout, Duration};
+
+// Global flag to signal command cancellation
+static SHOULD_ABORT: AtomicBool = AtomicBool::new(false);
+
+#[tauri::command]
+pub fn kill_running_command() {
+    SHOULD_ABORT.store(true, Ordering::Relaxed);
+}
 
 #[derive(Debug, Serialize, Clone)]
 pub struct DeviceMetrics {
@@ -45,8 +54,8 @@ pub async fn connect_device(
             .output()
             .map_err(|e| format!("Failed to start ADB server: {}", e))?;
 
-        let start_stderr = String::from_utf8_lossy(&start_output.stderr);
-        let start_stdout = String::from_utf8_lossy(&start_output.stdout);
+        let _start_stderr = String::from_utf8_lossy(&start_output.stderr);
+        let _start_stdout = String::from_utf8_lossy(&start_output.stdout);
 
         // Disconnect any existing connection on this port
         let _ = Command::new(&adb_executable)
@@ -167,7 +176,9 @@ pub async fn execute_command(
     // - {{adb}} prefixed commands: frontend replaces {{adb}} with "adb -s <device>" which
     //   runs locally and connects to device (for chaining multiple adb calls with && or ;)
     // - Other commands (ping, lsof, etc.): run locally for network diagnostics
-    let output = Command::new("sh")
+
+    // Use Command::output() directly - reliable and captures all output
+    let output = std::process::Command::new("sh")
         .args(["-c", &command])
         .output()
         .map_err(|e| format!("Failed to execute command: {}", e))?;
@@ -175,21 +186,19 @@ pub async fn execute_command(
     let stdout = String::from_utf8_lossy(&output.stdout);
     let stderr = String::from_utf8_lossy(&output.stderr);
 
-    // grep returns exit code 1 when no matches found - this is normal, not an error
-    // Since we run through sh -c, we need to check if command contains grep and exit code is 1
+    // Stream stdout lines to the console
+    for line in stdout.lines() {
+        let _ = window.emit("console-output", format!("{}\n", line));
+    }
+
+    // grep returns exit code 1 when no matches found - this is normal
     let is_grep_no_match = command.contains("grep") && output.status.code() == Some(1);
 
     if output.status.success() || is_grep_no_match {
-        // Stream output line by line
-        for line in stdout.lines() {
-            let _ = window.emit("console-output", format!("{}\n", line));
-        }
         if is_grep_no_match {
-            // grep found no matches - this is OK, return empty
-            Ok(CommandResult::ok(String::from("")))
-        } else {
-            Ok(CommandResult::ok(stdout.to_string()))
+            return Ok(CommandResult::ok(String::from("")));
         }
+        return Ok(CommandResult::ok(stdout.to_string()));
     } else {
         let error_msg = if stderr.contains("no device") {
             "Device not connected"
@@ -199,6 +208,9 @@ pub async fn execute_command(
             "Permission denied. Root required for this command."
         } else if stderr.contains("closed") || stderr.contains("offline") {
             "Device disconnected"
+        } else if stderr.trim().is_empty() && !stdout.trim().is_empty() {
+            // Has stdout but non-zero exit - still success if we got output
+            return Ok(CommandResult::ok(stdout.to_string()));
         } else if stderr.trim().is_empty() {
             "Command failed with no output"
         } else {

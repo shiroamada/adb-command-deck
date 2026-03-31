@@ -1,5 +1,6 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { getCurrentWindow } from '@tauri-apps/api/window';
+import { open } from '@tauri-apps/plugin-dialog';
 import { ApkInstallDialog } from './ApkInstallDialog';
 import styles from './ApkDropZone.module.css';
 
@@ -12,8 +13,6 @@ export function ApkDropZone() {
   const [isDragging, setIsDragging] = useState(false);
   const [apkFile, setApkFile] = useState<ApkFile | null>(null);
   const [showDialog, setShowDialog] = useState(false);
-  const [manualPath, setManualPath] = useState('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const appWindow = getCurrentWindow();
@@ -52,37 +51,17 @@ export function ApkDropZone() {
     };
   }, []);
 
-  const handleBrowse = useCallback(() => {
-    fileInputRef.current?.click();
-  }, []);
-
-  const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && file.name.endsWith('.apk')) {
-      const filePath = (file as File & { path?: string }).path;
-      if (filePath && filePath.length > 0 && filePath !== file.name) {
-        setApkFile({ path: filePath, name: file.name });
-      } else {
-        setApkFile({ path: file.name, name: file.name });
-      }
+  const handleBrowse = useCallback(async () => {
+    const selected = await open({
+      multiple: false,
+      filters: [{ name: 'APK', extensions: ['apk'] }],
+    });
+    if (selected && typeof selected === 'string' && selected.toLowerCase().endsWith('.apk')) {
+      const name = selected.split(/[/\\]/).pop() || selected;
+      setApkFile({ path: selected, name });
       setShowDialog(true);
     }
-    // Reset input
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
   }, []);
-
-  const handleManualSubmit = useCallback((e: React.FormEvent) => {
-    e.preventDefault();
-    if (manualPath.trim()) {
-      const path = manualPath.trim();
-      const name = path.split(/[/\\]/).pop() || path;
-      setApkFile({ path, name });
-      setShowDialog(true);
-      setManualPath('');
-    }
-  }, [manualPath]);
 
   const handleClose = () => {
     setShowDialog(false);
@@ -92,13 +71,6 @@ export function ApkDropZone() {
   return (
     <>
       <div className={`${styles.dropZone} ${isDragging ? styles.dragging : ''}`}>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".apk"
-          onChange={handleFileSelect}
-          className={styles.fileInput}
-        />
         <span className={styles.icon}>⬇</span>
         <span className={styles.text}>Drop APK here to install</span>
         <span className={styles.hint}>or</span>
@@ -109,19 +81,6 @@ export function ApkDropZone() {
         >
           Browse
         </button>
-
-        <form className={styles.manualForm} onSubmit={handleManualSubmit}>
-          <input
-            type="text"
-            className={styles.manualInput}
-            placeholder="Or paste APK path here..."
-            value={manualPath}
-            onChange={(e) => setManualPath(e.target.value)}
-          />
-          <button type="submit" className={styles.submitBtn} disabled={!manualPath.trim()}>
-            →
-          </button>
-        </form>
       </div>
 
       {showDialog && apkFile && (

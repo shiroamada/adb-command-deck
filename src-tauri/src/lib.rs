@@ -1,9 +1,6 @@
 mod commands;
 
-use commands::{
-    adb::{check_daemon_status, detect_adb, validate_adb_path},
-    device::{check_device_connection, connect_device, disconnect_device, execute_command, get_device_metrics, install_apk},
-};
+use commands::device::kill_running_command;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -11,15 +8,16 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![
-            detect_adb,
-            validate_adb_path,
-            check_daemon_status,
-            connect_device,
-            disconnect_device,
-            execute_command,
-            get_device_metrics,
-            check_device_connection,
-            install_apk,
+            commands::adb::detect_adb,
+            commands::adb::validate_adb_path,
+            commands::adb::check_daemon_status,
+            commands::device::connect_device,
+            commands::device::disconnect_device,
+            commands::device::execute_command,
+            commands::device::get_device_metrics,
+            commands::device::check_device_connection,
+            commands::device::install_apk,
+            kill_running_command,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -22,6 +22,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           id={inputId}
           className={`${styles.input} ${styles[variant]} ${error ? styles.error : ''}`}
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck={false}
           {...props}
         />
         {error && <span className={styles.errorText}>{error}</span>}
